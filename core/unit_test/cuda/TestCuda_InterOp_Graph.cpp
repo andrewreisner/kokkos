@@ -15,6 +15,7 @@ import kokkos.core;
 #include <Kokkos_Graph.hpp>
 
 #include <gtest/gtest.h>
+#include <gmock/gmock.h>
 
 namespace {
 
@@ -116,9 +117,7 @@ TEST_F(TEST_CATEGORY_FIXTURE(GraphInterOp), debug_dot_print) {
   std::stringstream buffer;
   buffer << std::ifstream(dot).rdbuf();
 
-  ASSERT_TRUE(std::regex_search(buffer.str(), std::regex(expected)))
-      << "Could not find expected signature regex " << std::quoted(expected)
-      << " in " << dot;
+  EXPECT_THAT(buffer.str(), ::testing::MatchesRegex(expected));
 }
 
 // Ensure that the graph has been instantiated with the default flag.
